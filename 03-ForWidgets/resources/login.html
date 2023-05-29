@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LoginWindow</title>
+  </head>
+  <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+  <body>
+    <div>
+      <h2>Hello QWebChannel</h2>
+      <p>{ name: "QWebChannel", version: 6.6 }</p>
+      <button onclick="onLogin()">Login</button>
+    </div>
+  </body>
+
+  <script>
+    console.log(navigator.userAgent);
+
+    const data = { name: "QWebChannel", version: 6.6 };
+
+    new QWebChannel(qt.webChannelTransport, function (channel) {
+      window.Context = channel.objects.Context;
+    });
+
+    function onLogin() {
+      window.Context.onLogin(data);
+    }
+  </script>
+</html>

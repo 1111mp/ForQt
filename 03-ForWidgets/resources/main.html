@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MainWindow</title>
+    <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+  </head>
+  <body>
+    <div>
+      <h2>Hello QWebChannel</h2>
+      <p id="info"></p>
+      <button onclick="onChangeInfo()">change info</button>
+      <p id="result"></p>
+      <button onclick="onTest()">Call native method async & callback</button>
+    </div>
+  </body>
+  <script>
+    console.log(navigator.userAgent);
+
+    const manager = new Map();
+    let id = 0; // should use uuid
+
+    const ele = document.querySelector("#info");
+    const result = document.querySelector("#result");
+
+    new QWebChannel(qt.webChannelTransport, function (channel) {
+      window.Context = channel.objects.Context;
+
+      ele.innerText = JSON.stringify(window.Context.info);
+
+      window.Context.onResponse.connect(function (id, data) {
+        const { resolve = undefined } = manager.get(id);
+
+        resolve && resolve(data);
+      });
+
+      window.Context.onInfoChanged.connect(function (info) {
+        alert(JSON.stringify(info));
+        ele.innerText = JSON.stringify(info);
+      });
+    });
+
+    function onChangeInfo() {
+      window.Context.setInfo({ name: "from web", version: 6.6 });
+    }
+
+    function makePromise(callback) {
+      id += 1;
+      return new Promise((resolve, reject) => {
+        callback(id);
+        manager.set(id, { resolve, reject });
+      });
+    }
+
+    function onTest() {
+      makePromise((id) => {
+        window.Context.request(id, "from html");
+      }).then((res) => {
+        result.innerText = JSON.stringify(res);
+      });
+    }
+  </script>
+</html>

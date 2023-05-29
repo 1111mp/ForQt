@@ -12,3 +12,9 @@ Realize the function of NotePad:
 Dynamic Window by Instantiator:
 
 ![Image text](https://github.com/1111mp/ForQt/blob/main/Resources/Images/02-LoginWindow.png)
+
+## 03 ForWidgets
+
+QWebEngine & QWebChannel for jsBridge.
+
+![](https://github.com/1111mp/ForQt/blob/main/Resources/Videos/forwidgets.mov)
