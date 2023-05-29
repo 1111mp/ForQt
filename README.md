@@ -18,5 +18,5 @@ Dynamic Window by Instantiator:
 QWebEngine & QWebChannel for jsBridge.
 
 <video id="video" controls="" preload="none">
-<source id="mp4" src="https://github.com/1111mp/ForQt/blob/main/Resources/Videos/forwidgets.mov" type="video/mov">
+<source id="mov" src="https://github.com/1111mp/ForQt/blob/main/Resources/Videos/forwidgets.mov" type="video/mov">
 </video>
