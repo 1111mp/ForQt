@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QVariantMap>
+#include <QPromise>
+#include <QFuture>
+#include <QScopedPointer>
+#include <QThread>
 #include <QDebug>
 
 class MainContext : public QObject
@@ -15,7 +19,7 @@ public:
     explicit MainContext(const QVariantMap& info, QObject *parent = nullptr);
 
 public slots:
-    void setInfo(const QVariantMap& info);
+    QFuture<qint32> setInfo(const QVariantMap& info);
     void request(qint32 id, QString message);
 
 signals:

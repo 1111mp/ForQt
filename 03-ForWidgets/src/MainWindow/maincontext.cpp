@@ -6,14 +6,30 @@ MainContext::MainContext(const QVariantMap& info, QObject *parent)
 
 }
 
-void MainContext::setInfo(const QVariantMap &info)
+QFuture<qint32> MainContext::setInfo(const QVariantMap &info)
 {
     foreach (auto key, info.keys()) {
         qInfo() << key << ":" << info.value(key);
     }
 
+    QPromise<qint32> promise;
+    QFuture<int> future = promise.future();
+
     m_Info = info;
     emit onInfoChanged(info);
+
+    QScopedPointer<QThread> thread(QThread::create([] (QPromise<int> promise) {
+                                       promise.start();   // notifies QFuture that the computation is started
+                                       promise.addResult(42);
+                                       QThread::sleep(5);
+                                       promise.finish();  // notifies QFuture that the computation is finished
+                                   }, std::move(promise)));
+    thread->start();
+
+    future.waitForFinished();  // blocks until QPromise::finish is called
+    future.result();
+
+    return future;
 }
 
 void MainContext::request(qint32 id, QString message)

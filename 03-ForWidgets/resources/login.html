@@ -12,6 +12,8 @@
       <h2>Hello QWebChannel</h2>
       <p>{ name: "QWebChannel", version: 6.6 }</p>
       <button onclick="onLogin()">Login</button>
+      <br />
+      <button onclick="onTestScheme()">Test Scheme</button>
     </div>
   </body>
 
@@ -26,6 +28,21 @@
 
     function onLogin() {
       window.Context.onLogin(data);
+    }
+
+    function onTestScheme() {
+      fetch("app://www.baidu.com", {
+        method: "GET",
+        headers: {
+          "Content-Type": "text/html",
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   </script>
 </html>

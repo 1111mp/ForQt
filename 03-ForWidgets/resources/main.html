@@ -5,6 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MainWindow</title>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <style>
+      img {
+        width: 500px;
+        height: 400px;
+      }
+    </style>
     <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
   </head>
   <body>
@@ -14,6 +26,11 @@
       <button onclick="onChangeInfo()">change info</button>
       <p id="result"></p>
       <button onclick="onTest()">Call native method async & callback</button>
+      <br />
+      <img
+        src="app://upload-images.jianshu.io/upload_images/5809200-a99419bb94924e6d.jpg"
+        alt=""
+      />
     </div>
   </body>
   <script>
@@ -43,7 +60,12 @@
     });
 
     function onChangeInfo() {
-      window.Context.setInfo({ name: "from web", version: 6.6 });
+      window.Context.setInfo(
+        { name: "from web", version: 6.6 },
+        (returnVal) => {
+          alert(returnVal);
+        }
+      );
     }
 
     function makePromise(callback) {
